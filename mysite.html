@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Store | Dark Catalog 2026</title>
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    <style>
+        /* CSS стили остались прежними для экономии места */
+        body {
+            background-color: #000;
+            background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.5) 25%, transparent 25%), linear-gradient(-45deg, rgba(0, 0, 0, 0.5) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.5) 75%), linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.5) 75%);
+            background-size: 15px 15px;
+            background-position: 0 0, 0 7.5px, 7.5px -7.5px, 7.5px 0;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+        body::before { /* Эффект шума */ }
+        header { text-align: center; padding: 40px 0; }
+        h1 { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin: 0; }
+        p { color: #aaa; margin-top: 10px; }
+        .catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .product-card:hover { border-color: rgba(255, 255, 255, 0.3); transform: translateY(-5px); }
+        .product-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #111; }
+        .product-info { padding: 16px; flex-grow: 1; }
+        .product-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        .product-price { font-size: 18px; font-weight: 800; color: #fff; }
+        .buy-btn { display: block; background: #fff; color: #000; text-align: center; text-decoration: none; padding: 12px; font-size: 14px; font-weight: 800; margin-top: 15px; border-radius: 8px; transition: background 0.3s; }
+        .buy-btn:hover { background: #e0e0e0; }
+        @media (min-width: 768px) { .catalog { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PREMIUM STORE</h1>
+        <p>Каталог одежды Deateath. Цены указаны в **EUR**.</p>
+    </header>
+
+    <div class="catalog" id="product-list">
+        <!-- Карточки товаров будут добавлены сюда автоматически через JavaScript -->
+    </div>
+
+    <script>
+        // Этот скрипт загружает данные из products.json и создает карточки товаров
+        async function loadProducts() {
+            try {
+                const response = await fetch('products.json'); // Загружаем JSON-файл
+                const products = await response.json(); // Преобразуем его в массив данных
+                const productListElement = document.getElementById('product-list');
+
+                products.forEach(product => {
+                    const cardHTML = `
+                        <div class="product-card">
+                            <img src="${product.image}" alt="${product.title}" class="product-img">
+                            <div class="product-info">
+                                <div class="product-title">${product.title}</div>
+                                <div class="product-price">**${product.price}**</div>
+                                <a href="${product.link}" class="buy-btn">КУПИТЬ В TG</a>
+                            </div>
+                        </div>
+                    `;
+                    productListElement.insertAdjacentHTML('beforeend', cardHTML); // Вставляем HTML-код карточки
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки товаров:', error);
+            }
+        }
+
+        loadProducts();
+    </script>
+
+</body>
+</html>
+
+
